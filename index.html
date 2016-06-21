@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Right Angled Triangle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color: grey; color: red">
+<h3><strong>MA</strong> Right Angled Triangle</h3>
+
+<canvas id="canvas" width="400" height="400"></canvas>
+<h4>Nino van der Vinden</h4>
+
+<script src="utils.js"></script>
+<script src="triangle.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        context = canvas.getContext('2d');
+        var posX = 0;
+        var posY = 0;
+        var controller = 0;
+        canvasHeight = canvas.height;
+        canvasWidth = canvas.width;
+
+        var triangle = [];
+        var amount = 10;
+        for(var j = 0;j < amount;j++){
+            triangle[j] = new Triangle();
+            //window.requestAnimationFrame(drawFrame, canvas);
+            triangle[j].xLeft = -0 + 50*j; // fixed point triangle
+            triangle[j].yLeft = -0 + 50*j; // fixed point triangle
+            triangle[j].draw(context);
+            console.log(triangle[j]);
+        }
+
+        //mouse = utils.captureMouse(canvas);
+
+        setTimeout((function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for(var i = 0;i<amount;i++){
+                triangle[i].x = posX;
+                triangle[i].y = posY;
+                triangle[i].draw(context);
+                var color = 25*i;
+                switch(controller){
+                    case 0:
+                        color = 25*i;
+                        if(posX <= canvasWidth){
+                            posX += 1;
+                            triangle[i].colorFill = "rgba("+ 255 +","+ 0 +","+ 0 +","+ 0.3 +")";
+                            triangle[i].colorLine = "rgba("+ 255 +","+ 0 +","+ 0 +","+ 1 +")";
+                        } else {
+                            controller += 1;
+                        }
+                        break;
+                    case 1:
+                        color = 25*i;
+                        if(posY <= canvasHeight){
+                            posY += 1;
+                            triangle[i].colorFill = "rgba("+ 0 +","+ 255 +","+ 0 +","+ 0.3 +")";
+                            triangle[i].colorLine = "rgba("+ 0 +","+ 255 +","+ 0 +","+ 1 +")";
+                        } else {
+                            controller += 1;
+                        }
+                        break;
+                    case 2:
+                        color = 25*i;
+                        if(posX >= 0){
+                            posX -= 1;
+                            triangle[i].colorFill = "rgba("+ 0 +","+ 0 +","+ 255 +","+ 0.3 +")";
+                            triangle[i].colorLine = "rgba("+ 0 +","+ 0 +","+ 255 +","+ 1 +")";
+                        } else {
+                            controller += 1;
+                        }
+                        break;
+                    case 3:
+                        color = 25*i;
+                        if(posY >= 0){
+                            posY -= 1;
+                            triangle[i].colorFill = "rgba("+ 255 +","+ 255 +","+ 0 +","+ 0.3 +")";
+                            triangle[i].colorLine = "rgba("+ 255 +","+ 255 +","+ 0 +","+ 1 +")";
+                        } else {
+                            controller = 0;
+                        }
+                        break;
+                }
+            }
+
+        }()),4000);
+    };
+</script>
+
+</body>
+</html>
